@@ -1,6 +1,6 @@
 """Radial Basis Function Network"""
-# coding:utf-8
-# pylint: disable = C0103, C0301
+# coding: utf-8
+# pylint: disable = C0103, C0301, C0200
 import math
 
 class RBFN(object):
@@ -24,6 +24,6 @@ class RBFN(object):
     def __dist(self, x, y):
         """Calculate vector's distance"""
         ret = 0
-        for i in enumerate(x):
+        for i in range(len(x)):
             ret += (x[i] - y[i]) * (x[i] - y[i])
         return ret
