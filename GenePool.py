@@ -1,6 +1,7 @@
-"""Gene Pool - Actually do the algorithm"""
 # coding: utf-8
 # pylint: disable = C0103, C0200, R0902, R0912, R0913
+
+"""Gene Pool - Actually do the algorithm"""
 
 import random
 import Gene
@@ -8,13 +9,12 @@ import GenePair
 
 class GenePool(object):
     """Gene Pool class"""
-    def __init__(self, gm, poolsize=512, pro_CR=0.5, rat_CR=0.5, pro_MU=0.5, rat_MU=0.5):
+    def __init__(self, gm, poolsize=512, pro_CS=0.5, rat_CS=0.5, pro_MU=0.5, rat_MU=0.5):
         self.poolsize = poolsize
-        self.pro_CR = pro_CR
-        self.rat_CR = rat_CR
+        self.pro_CS = pro_CS
+        self.rat_CS = rat_CS
         self.pro_MU = pro_MU
         self.rat_MU = rat_MU
-
         self.gene = [0]*poolsize
         self.newgene = [0]*poolsize
         for i in range(len(self.gene)):
@@ -39,7 +39,7 @@ class GenePool(object):
 
     def geneCrossover(self, x, y, xg, yg):
         """Do Gene Crossover and use real type"""
-        ratio = (random.random() - 0.5) * 2 * self.rat_CR
+        ratio = (random.random() - 0.5) * 2 * self.rat_CS
         nx = Gene.Gene()
         ny = Gene.Gene()
         for i in range(len(xg.DNA)):
@@ -89,7 +89,7 @@ class GenePool(object):
             self.gene[i] = self.newgene[i]
         reserve = 0
         for i in range(len(A)):
-            if random.random() < self.pro_CR:
+            if random.random() < self.pro_CS:
                 x = random.randint(0, 2**31-1) % (len(A) - reserve) + reserve
                 self.geneCrossover(i, x, self.gene[i], self.gene[x])
 

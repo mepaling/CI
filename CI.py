@@ -17,6 +17,8 @@ http://www.chebucto.ns.ca/Science/AIMET/archive/ddj/fuzzy_logic_in_C/
 import Tkinter as tk
 from functions import *
 from FuzzySystem import *
+import GeneMachine
+import PSOMachine
 
 # base settings
 canvas_width = 600
@@ -25,6 +27,7 @@ ratio = 9
 offset = point(150, 500)
 rotate = point(1, -1)
 speed = 10
+calc_model = None
 
 # Open two files
 file_4D = open("train4D.txt", 'w')
@@ -127,7 +130,7 @@ def calculate_sensor(car):
 def moving():
     car_last_point = point(car.x, car.y)
     # Calculate theta then set car's new position and update sensor's data
-    theta = fs.fuzzy_main(car.sf, car.sl, car.sr)
+    theta = calc_model.main(car.sf, car.sl, car.sr)
     #theta = 40
     car.set_pos_theta(theta)
     calculate_sensor(car)
@@ -148,6 +151,20 @@ def moving():
         canvas.after(int(1000 / speed), moving)
 
 """Main"""
+while True:
+    print ("1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN")
+    enter = raw_input("Enter choice (1/2/3): ")
+    if enter is "1":    # Create a FuzzySystem instance
+        calc_model = FuzzySystem()
+        break
+    elif enter is "2":  # Create a GeneMachine instance
+        calc_model = GeneMachine.GeneMachine() 
+        break
+    elif enter is "3":  # Create a PSOMachine instance
+        calc_model = PSOMachine.PSOMachine()
+        print "Not done yet, please try again!"
+    else:
+        print "You enter a wrong choice, try again!"
 
 # Create Tk window and canvas
 root = tk.Tk()
@@ -169,8 +186,6 @@ file_4D.write(car.print_car_4D() + "\n")
 file_6D.write(car.print_car_6D() + "\n")
 draw_car_image(canvas, car)
 
-# Create a FuzzySystem insatnce
-fs = FuzzySystem()
 
 # Create goal and draw
 goal = point(24, 37)
@@ -184,3 +199,6 @@ canvas.after(0, moving)
 canvas.pack()
 root.wm_title("105522056 王建舜 HW1")
 root.mainloop()
+
+# Keep Window Open
+raw_input("\n\nPress Enter to close the window!")

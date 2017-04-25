@@ -13,7 +13,7 @@ class Degree(Enum):
 
 class FuzzySystem:
     fuzzyi = 0
-    def fuzzy_main(self, sf, sl, sr):
+    def main(self, sf, sl, sr):
         funVal = [55, -55, -40.0, 40.0, 30, -30]
         a = [self.membership_sl(sl, Degree.PM), self.membership_sr(sr, Degree.PM),
              self.membership_sr(sr, Degree.PS), self.membership_sl(sl, Degree.PS),

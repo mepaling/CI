@@ -1,6 +1,8 @@
-"""Real type of Gene Algorithm"""
 # coding: utf-8
 # pylint: disable = C0103, C0200
+
+"""Real type of Gene Algorithm"""
+
 import random
 import RBFN
 

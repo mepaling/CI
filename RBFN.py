@@ -1,6 +1,8 @@
-"""Radial Basis Function Network"""
 # coding: utf-8
 # pylint: disable = C0103, C0301, C0200
+
+"""Radial Basis Function Network"""
+
 import math
 
 class RBFN(object):
