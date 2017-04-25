@@ -6,7 +6,7 @@
 import copy
 import random
 import operator
-import Gene
+import Gene as Gene
 
 class GenePool(object):
     """Gene Pool class"""
@@ -27,7 +27,7 @@ class GenePool(object):
     def init(self, bestGeneList):
         """initialize"""
         if not bestGeneList:
-            for _ in range(len(self.bestgenesize)):
+            for _ in range(self.bestgenesize):
                 gene = Gene.Gene()
                 gene.f = 1e9
                 self.bestgenelist.append(gene)
@@ -104,7 +104,7 @@ class GenePool(object):
                 if random.random() < self.pro_MU:
                     for j in range(0, self.genepoolList[0].DNALength):
                         self.genepoolList[i].DNA[j] = self.mutate(self.genepoolList[i].DNA[j])
-                self.genepoolList[i].setrbf()
+                self.genepoolList[i].on()
 
             self.genelist = copy.deepcopy(self.genepoolList)
             self.hasiter += 1

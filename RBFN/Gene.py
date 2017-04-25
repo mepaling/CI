@@ -4,7 +4,7 @@
 """Real type of Gene Algorithm"""
 
 import random
-import RBFN
+import RBFN as RBFN
 
 class Gene(object):
     """RGA class"""
@@ -25,7 +25,7 @@ class Gene(object):
         for i in range(1 + self.J, 1 + self.J + self.J*self.xDim):
             self.DNA[i] = random.uniform(0, 30)
         for i in range(1+self.J + self.J*self.xDim, 1 + self.J + self.J*self.xDim + self.J):
-            self.DNA[i] = random.random(0, 10)
+            self.DNA[i] = random.uniform(0, 10)
 
     def clone(self):
         """Reproduction"""
@@ -72,7 +72,7 @@ class Gene(object):
     def setGene(self, genestr):
         """Set Best Gene"""
         gene_list = genestr.split()
-        for i in range(gene_list):
+        for i in range(len(gene_list)):
             self.DNA[i] = gene_list[i]
         self.on()
 

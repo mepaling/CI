@@ -19,11 +19,11 @@ class RBFN(object):
         """Calculate the output of Gauss base function"""
         ret = 0.0
         for i in range(self.J):
-            val = self.W[i] * math.exp(-self.__dist(x, self.M[i] / (2 * self.sigma[i] * self.sigma[i])))
+            val = self.W[i] * math.exp(- self.dist(x, self.M[i]) / (2 * self.sigma[i] * self.sigma[i]))
             ret += val
         return ret
 
-    def __dist(self, x, y):
+    def dist(self, x, y):
         """Calculate vector's distance"""
         ret = 0.0
         for i in range(len(x)):

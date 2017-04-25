@@ -17,8 +17,8 @@ http://www.chebucto.ns.ca/Science/AIMET/archive/ddj/fuzzy_logic_in_C/
 import Tkinter as tk
 from functions import *
 import FS.FuzzySystem as FuzzySystem
-import GA.GeneMachine
-import PSO.PSOMachine
+import RBFN.GeneMachine as GeneMachine
+import RBFN.PSOMachine
 
 # base settings
 canvas_width = 600
