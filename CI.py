@@ -16,9 +16,9 @@ http://www.chebucto.ns.ca/Science/AIMET/archive/ddj/fuzzy_logic_in_C/
 
 import Tkinter as tk
 from functions import *
-from FuzzySystem import *
-import GeneMachine
-import PSOMachine
+import FS.FuzzySystem as FuzzySystem
+import GA.GeneMachine
+import PSO.PSOMachine
 
 # base settings
 canvas_width = 600
@@ -155,7 +155,7 @@ while True:
     print ("1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN")
     enter = raw_input("Enter choice (1/2/3): ")
     if enter is "1":    # Create a FuzzySystem instance
-        calc_model = FuzzySystem()
+        calc_model = FuzzySystem.FuzzySystem()
         break
     elif enter is "2":  # Create a GeneMachine instance
         calc_model = GeneMachine.GeneMachine() 
