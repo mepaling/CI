@@ -11,8 +11,7 @@ import RBFN.PSOMachine as PSOMachine
 
 """
 By 105522056 王建舜
-"""
-"""
+
 Reference
 http://effbot.org/tkinterbook/canvas.htm
 http://stackoverflow.com/questions/17985216/draw-circle-in-tkinter-python
@@ -20,6 +19,11 @@ http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/create_oval.html
 http://stackoverflow.com/questions/23690993/how-do-we-delete-a-shape-thats-already-been-created-in-tkinter-canvas
 http://stackoverflow.com/questions/9776718/how-do-i-stop-tkinter-after-function
 http://www.chebucto.ns.ca/Science/AIMET/archive/ddj/fuzzy_logic_in_C/
+
+Reference 2
+http://www.academia.edu/1570783/TRAINING_RADIAL_BASIS_FUNCTION_NETWORKS_BY_GENETIC_ALGORITHMS
+https://pdfs.semanticscholar.org/41a6/51956cf2605a729e83aef5d13a831b4a832c.pdf
+http://morris821028.github.io/
 """
 
 # base settings
