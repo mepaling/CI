@@ -1,5 +1,5 @@
 # coding: utf-8
-# pylint: disable = C0301, C0103, W0123, C0200
+# pylint: disable = C0301, C0103, W0123, C0200, W0403
 
 """Gene Machine - Run the Gene Algo"""
 
@@ -17,6 +17,9 @@ def setinfo():
     ratio_crossover = raw_input("Ratio of Crossover (0.5):") or 0.5
     pro_mutation = raw_input("Probability of Mutation (0.5):") or 0.5
     ratio_mutation = raw_input("Ratio of Mutation (0.5):") or 0.5
+    print "\n---\nYour Input:\n" + "PoolSize: " + str(poolsize) + "\nIterating Times: " + str(itertimes) + \
+          "\nProbability of Crossover: " + str(pro_crossover) + "\nRatio of Crossover: " + str(ratio_crossover) + \
+          "\nProbability of Mutation: " + str(pro_mutation) + "\nRatio of Mutation: " + str(ratio_mutation) + "\n---\n"
     return {'itertimes':int(itertimes), 'poolsize':int(poolsize),
             'pro_CS':float(pro_crossover), 'rat_CS':float(ratio_crossover),
             'pro_MU':float(pro_mutation), 'rat_MU':float(ratio_mutation)}
@@ -96,4 +99,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    raw_input("\nPress Enter to Close the window")
+    raw_input("\nPress Enter to close the window")
