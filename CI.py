@@ -1,5 +1,13 @@
 # coding: utf-8
-# pylint: skip-file
+# pylint: disable = C0103, C0200, W0614, R0913, W0621, W0622, W0401, W0105, C0111, C0301, C0122, C0325, R0204
+
+import Tkinter as tk
+import sys
+from functions import *
+import FS.FuzzySystem as FuzzySystem
+import RBFN.Gene as Gene
+import RBFN.GeneUI as GeneUI
+import RBFN.PSOMachine as PSOMachine
 
 """
 By 105522056 王建舜
@@ -14,12 +22,6 @@ http://stackoverflow.com/questions/9776718/how-do-i-stop-tkinter-after-function
 http://www.chebucto.ns.ca/Science/AIMET/archive/ddj/fuzzy_logic_in_C/
 """
 
-import Tkinter as tk
-from functions import *
-import FS.FuzzySystem as FuzzySystem
-import RBFN.GeneMachine as GeneMachine
-import RBFN.PSOMachine
-
 # base settings
 canvas_width = 600
 canvas_height = 600
@@ -28,10 +30,12 @@ offset = point(150, 500)
 rotate = point(1, -1)
 speed = 10
 calc_model = None
+gene = None
 
-# Open two files
+# Open 3 files
 file_4D = open("train4D.txt", 'w')
 file_6D = open("train6D.txt", 'w')
+file_GA = open("bestGA.txt", "r")
 
 # calculate the value after zoomed
 def zoom(value, method):
@@ -59,7 +63,7 @@ def draw_car_image(canvas, car, car_last_point=None):
     if car_last_point is None:
         car.veraxis = line(car.x, car.y, x2=car.x, y2=car.y+car.r*1.5)
         car.horaxis = line(car.x-car.r*1.5, car.y, x2=car.x+car.r*1.5, y2=car.y)
-    else: 
+    else:
         slope = get_slope(car_point, car_last_point)
         try:
             ver_slope = (-1) / slope
@@ -100,7 +104,7 @@ def calculate_sensor(car):
             break
         else:
             count -= 1
-        # the intersection point of front sensor line and wall 
+        # the intersection point of front sensor line and wall
         point_f_border = point_intersection_between_lines(ele, car.sfl)
         if point_f_border is not None and (between_ab(point_f_border.x, ele.xmin, ele.xmax) and between_ab(point_f_border.y, ele.ymin, ele.ymax)):
             dis_f_border = dis_p1_p2(car_point, point_f_border)
@@ -110,7 +114,7 @@ def calculate_sensor(car):
         if point_l_border is not None and (between_ab(point_l_border.x, ele.xmin, ele.xmax) and between_ab(point_l_border.y, ele.ymin, ele.ymax)):
             dis_l_border = dis_p1_p2(car_point, point_l_border)
             min_sl = min(min_sl, dis_l_border)
-        
+
         point_r_border = point_intersection_between_lines(ele, car.srl)
         if point_r_border is not None and (between_ab(point_r_border.x, ele.xmin, ele.xmax) and between_ab(point_r_border.y, ele.ymin, ele.ymax)):
             dis_r_border = dis_p1_p2(car_point, point_r_border)
@@ -121,7 +125,7 @@ def calculate_sensor(car):
         #min_sr = min(min_sr, dis_between_point_line_theta(car_point, ele, car.phi - 45))
     #print car_point
     #print str(min_sf) + " " + str(min_sl) + " " + str(min_sr)
-    
+
     #print str(min_sf) + " " + str(min_sr) + " " + str(min_sl)
     car.set_sensor_val(min_sf, min_sl, min_sr)
     return car
@@ -130,16 +134,24 @@ def calculate_sensor(car):
 def moving():
     car_last_point = point(car.x, car.y)
     # Calculate theta then set car's new position and update sensor's data
-    theta = calc_model.main(car.sf, car.sl, car.sr)
+    calc_model_name = type(calc_model).__name__
+    if calc_model_name == "FuzzySystem":
+        theta = calc_model.main(car.sf, car.sl, car.sr)
+    elif calc_model_name == "GeneUI":
+        theta = calc_model.main(gene, [car.sf, car.sl, car.sr])
+        print theta
+    else:
+        # theta = calc_model.main( ?
+        pass
     #theta = 40
     car.set_pos_theta(theta)
     calculate_sensor(car)
 
     #print car
-    print(str(car) + " theta:" + str(theta) + "\n")
+    print str(car) + " theta:" + str(theta) + "\n"
     file_4D.write(car.print_car_4D(theta) + "\n")
     file_6D.write(car.print_car_6D(theta) + "\n")
-    
+
     # Delete the car image then redraw it
     remove_car_image(canvas, car)
     draw_circle(canvas, car_last_point.x, car_last_point.y, 0.5, "blue", 1)
@@ -150,15 +162,24 @@ def moving():
         # if not, keep on moving!
         canvas.after(int(1000 / speed), moving)
 
+def GA_Interface():
+    fstr = file_GA.readline()
+    gene = Gene.Gene()
+    gene.setGene(fstr)
+    gene.showDNA()
+    return gene
+
+
 """Main"""
 while True:
-    print ("1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN")
+    print "1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN"
     enter = raw_input("Enter choice (1/2/3): ")
     if enter is "1":    # Create a FuzzySystem instance
         calc_model = FuzzySystem.FuzzySystem()
         break
     elif enter is "2":  # Create a GeneMachine instance
-        calc_model = GeneMachine.GeneMachine() 
+        calc_model = GeneUI.GeneUI()
+        gene = GA_Interface()
         break
     elif enter is "3":  # Create a PSOMachine instance
         calc_model = PSOMachine.PSOMachine()
@@ -171,7 +192,7 @@ root = tk.Tk()
 canvas = tk.Canvas(root, width=canvas_width, height=canvas_height)
 
 # Create border and draw
-border_arr = [line(-6, 0, x2=-6, y2=22), line(-6, 22, x2=18, y2=22), line(18, 22, x2=18, y2=50), 
+border_arr = [line(-6, 0, x2=-6, y2=22), line(-6, 22, x2=18, y2=22), line(18, 22, x2=18, y2=50),
               line(6, 0, x2=6, y2=10), line(6, 10, x2=30, y2=10), line(30, 10, x2=30, y2=50),
               line(18, 50, x2=30, y2=50), line(-10, 0, x2=20, y2=0)]
 for ele in border_arr:
@@ -181,7 +202,7 @@ for ele in border_arr:
 car = car(0, 0, 90, 3)
 calculate_sensor(car)
 #print car
-print(str(car) + " theta:" + str(0) + "\n")
+print str(car) + " theta:" + str(0) + "\n"
 file_4D.write(car.print_car_4D() + "\n")
 file_6D.write(car.print_car_6D() + "\n")
 draw_car_image(canvas, car)

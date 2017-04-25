@@ -1,7 +1,7 @@
 # coding: utf-8
 # pylint: disable = C0301, C0103, W0123, C0200
 
-"""Gene Machine - the UI and base setting of Gene Algo"""
+"""Gene Machine - Run the Gene Algo"""
 
 import os
 import GenePool
@@ -9,10 +9,10 @@ import Gene
 
 def setinfo():
     """Get the needed infomation of gene pool"""
-    print "\nSet the information of Gene Pool."
+    print "Set the information of Gene Pool."
     print "If you don't type anything, remain default value!"
     poolsize = raw_input("Gene Pool Size (256):") or 256
-    itertimes = raw_input("Iteration Times (256):") or 256
+    itertimes = raw_input("Iteration Times (40):") or 40
     pro_crossover = raw_input("Probability of Crossover (0.5):") or 0.5
     ratio_crossover = raw_input("Ratio of Crossover (0.5):") or 0.5
     pro_mutation = raw_input("Probability of Mutation (0.5):") or 0.5
@@ -25,11 +25,10 @@ def main():
     """Start Gene Machine"""
     ret = setinfo()
     path = "./data/no_pos/"
-    datalist = []
     inputt = []
     outputt = []
 
-    for dirPath, dirNames, fileNames in os.walk(path):
+    for dirPath, fileNames in os.walk(path):
         for filee in fileNames:
             filee = os.path.join(dirPath, filee)
             f = open(filee, "r")
@@ -57,8 +56,8 @@ def main():
     bestGeneSize = int(ret.get('poolsize') / 10)
 
     while fError_now > 5:
-        if os.path.isfile("./best.txt"):
-            readfile = open("./best.txt", "r")
+        if os.path.isfile("./bestGA.txt"):
+            readfile = open("./bestGA.txt", "r")
             strlist = []
             for i in range(bestGeneSize):
                 strlist.append(readfile.readline())
@@ -73,8 +72,8 @@ def main():
             fError_ori = genelist[0].f
             print("before min function error = ", genelist[0].f)
             genepool = GenePool.GenePool(ret.get("poolsize"), ret.get('itertimes'),
-                                        ret.get("pro_CS"), ret.get("rat_CS"),
-                                        ret.get("pro_MU"), ret.get("rat_MU"), genelist)
+                                         ret.get("pro_CS"), ret.get("rat_CS"),
+                                         ret.get("pro_MU"), ret.get("rat_MU"), genelist)
         else:
             genepool = GenePool.GenePool(ret.get("poolsize"), ret.get('itertimes'),
                                          ret.get("pro_CS"), ret.get("rat_CS"),
@@ -87,7 +86,7 @@ def main():
         fError_now = bestGeneList[0].f
 
         if fError_now < fError_ori:
-            fw = open("./best.txt", 'w')
+            fw = open("./bestGA.txt", 'w')
             for i in range(genepool.bestgenesize):
                 DNAList = bestGeneList[i].getDNAList()
                 s = " ".join(str(ele) for ele in DNAList) + "\n"
@@ -97,3 +96,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    raw_input("\nPress Enter to Close the window")

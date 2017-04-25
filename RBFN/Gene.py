@@ -1,5 +1,5 @@
 # coding: utf-8
-# pylint: disable = C0103, C0200
+# pylint: disable = C0103, C0200, C0111
 
 """Real type of Gene Algorithm"""
 
@@ -15,7 +15,7 @@ class Gene(object):
         self.f = 0.0
         self.rbf = RBFN.RBFN(self.J, self.xDim)
         self.DNA = [0] * self.DNALength
-    
+
     def generate(self):
         """Random build Gene"""
         for i in range(1):
@@ -36,12 +36,12 @@ class Gene(object):
         g.on()
         return g
 
-    def calculateFitness(self, input, output):
+    def calculateFitness(self, inputt, outputt):
         """Calculate the stop condition"""
         self.on()
         ret = 0.0
-        for i in range(0, len(output)):
-            ret += (output[i] - self.rbf.calculateOutput(input[i]))**2
+        for i in range(0, len(outputt)):
+            ret += (outputt[i] - self.rbf.calculateOutput(inputt[i]))**2
         ret /= 2.0
         self.f = ret
 
@@ -76,9 +76,9 @@ class Gene(object):
             self.DNA[i] = gene_list[i]
         self.on()
 
-    def getThetaList(self, input):
+    def getThetaList(self, inputt):
         ret = []
-        for i in input:
+        for i in inputt:
             ret.append(self.rbf.calculateOutput(i))
         return ret
 
@@ -92,13 +92,18 @@ class Gene(object):
         for i in range(self.J):
             ret.append(self.rbf.sigma[i])
         return ret
-    
+
     def getDNAList(self):
         ret = []
         for i in range(self.DNALength):
             ret.append(self.DNA[i])
         return ret
-    
+
     def showDNA(self):
         ret = self.getDNAList()
         print "DNA:", ret
+
+    def getTheta(self, inputt):
+        ret = self.rbf.calculateOutput(inputt)
+        ret = ret * 80 - 40
+        return ret
