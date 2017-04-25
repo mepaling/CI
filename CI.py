@@ -2,7 +2,6 @@
 # pylint: disable = C0103, C0200, W0614, R0913, W0621, W0622, W0401, W0105, C0111, C0301, C0122, C0325, R0204
 
 import Tkinter as tk
-import sys
 from functions import *
 import FS.FuzzySystem as FuzzySystem
 import RBFN.Gene as Gene
@@ -138,7 +137,7 @@ def calculate_sensor(car):
 def moving():
     car_last_point = point(car.x, car.y)
     # Calculate theta then set car's new position and update sensor's data
-    calc_model_name = type(calc_model).__name__
+    calc_model_name = calc_model.__class__.__name__
     if calc_model_name == "FuzzySystem":
         theta = calc_model.main(car.sf, car.sl, car.sr)
     elif calc_model_name == "GeneUI":
