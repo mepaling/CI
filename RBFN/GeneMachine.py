@@ -25,7 +25,7 @@ def setinfo():
             'pro_MU':float(pro_mutation), 'rat_MU':float(ratio_mutation)}
 
 def main():
-    """Start Gene Machine"""
+    """Start Gene Machine to find best parameters of RBF Network"""
     ret = setinfo()
     path = "./data/no_pos/"
     inputt = []

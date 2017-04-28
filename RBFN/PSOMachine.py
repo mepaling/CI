@@ -2,12 +2,11 @@
 # coding: utf-8
 # pylint: disable =
 
-class PSOMachine(object):
-    """Particle Swarm Optimization Machine - the UI and base settings of PSO Algo"""
-    def __init__(self):
-        print "I'm the Particle Swarm Optimization Machine!"
 
-    def main(self, sensorx, sensory, sensorz):
-        """Get the theta value by sensor value"""
-        print "Get the theta value"
-        
+def main():
+    """Run PSO Machine to find best parameter of RBF Network"""
+    
+
+if __name__ == '__main__':
+    main()
+    raw_input("\nPress Enter to close the window")
