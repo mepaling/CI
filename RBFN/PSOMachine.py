@@ -52,7 +52,7 @@ def main():
                                     configs.get('ratio_phi1'), configs.get('ratio_phi2'))
     bestPSOList = sandbox.PSOIteration(inputt, outputt)
     PSOList = bestPSOList.getPSOList()
-    fw = open("./bestPSO.txt", 'w')
+    fw = open("../bestPSO.txt", 'w')
     print PSOList
     s = " ".join(str(ele) for ele in PSOList) + "\n"
     fw.write(s)
