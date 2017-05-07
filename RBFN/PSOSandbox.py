@@ -31,16 +31,16 @@ class PSOSandbox(object):
     def performPSO(self, inputt, outputt):
         for i in range(self.poolSize):
             self.PSOList[i].calculateFitness(inputt, outputt)
- 
+
         self.PSOList.sort(key=operator.attrgetter('f'))
 
         self.bestPSO = copy.deepcopy(self.PSOList[0])
 
-        print "HasIter:" + self.hasiter
+        print "HasIter:" + str(self.hasiter)
 
         for i in range(0, self.poolSize):
             for j in range(self.bestPSO.xLength):
-                self.PSOList[i].V[j] += self.phi1 * (self.PSOList[i].best[j] - self.PSOList[i].x[j]) + \
+                self.PSOList[i].v[j] += self.phi1 * (self.PSOList[i].best[j] - self.PSOList[i].x[j]) + \
                                         self.phi2 * (self.bestPSO.x[j] - self.PSOList[i].x[j])
                 self.PSOList[i].x[j] += self.PSOList[i].v[j]
                 self.PSOList[i].calculateFitness(inputt, outputt)

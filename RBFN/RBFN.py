@@ -10,7 +10,7 @@ class RBFN(object):
     """RBFN Main Class"""
     def __init__(self, J, xDim):
         #self.sigma = [0.0 for _ in range(J)]
-        self.sigma = numpy.zeros((J)), numpy.float32)
+        self.sigma = numpy.zeros((J), numpy.float32)
         #self.W = [0.0 for _ in range(J)]
         self.W = numpy.zeros((J), numpy.float32)
         #self.M = [[0.0 for _ in range(xDim)] for _ in range(J)]
