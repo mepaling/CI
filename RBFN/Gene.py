@@ -4,7 +4,7 @@
 """Real type of Gene Algorithm"""
 
 import random
-import RBFN as RBFN
+import RBFN
 
 class Gene(object):
     """RGA class"""

@@ -4,13 +4,17 @@
 """Radial Basis Function Network"""
 
 import math
+import numpy
 
 class RBFN(object):
     """RBFN Main Class"""
     def __init__(self, J, xDim):
-        self.sigma = [0.0 for _ in range(J)]
-        self.W = [0.0 for _ in range(J)]
-        self.M = [[0.0 for _ in range(xDim)] for _ in range(J)]
+        #self.sigma = [0.0 for _ in range(J)]
+        self.sigma = numpy.zeros((J)), numpy.float32)
+        #self.W = [0.0 for _ in range(J)]
+        self.W = numpy.zeros((J), numpy.float32)
+        #self.M = [[0.0 for _ in range(xDim)] for _ in range(J)]
+        self.M = numpy.zeros((J, xDim), numpy.float32)
         self.J = J
         self.xDim = xDim
         self.bias = 0
