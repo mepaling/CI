@@ -88,5 +88,8 @@ ENV/
 # Rope project settings
 .ropeproject
 
-*.txt
-
+# Generated files
+bestPSO.txt
+bestGA.txt
+train4D.txt
+train6D.txt
