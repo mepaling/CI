@@ -18,9 +18,9 @@ def setinfo(debugg, para):
             ret = {'itertimes':int(10), 'poolsize':int(10),
                    'ratio_phi1':float(para.get('phi1')), 'ratio_phi2':float(para.get('phi2'))}
     else:
-        print "Set the information of PSO Sandbox."
+        print "Please set the information of PSO Sandbox."
         print "Default value with nothing input!"
-        poolsize = raw_input("Gene Pool Size (128):") or 128
+        poolsize = raw_input("Gene Pool Size (10):") or 10
         itertimes = raw_input("Iteration Times (10):") or 10
         ratio_phi1 = raw_input("Ratio of learning from INDIVIDUAL'S PREVIOUS best (0.5):") or 0.5
         ratio_phi2 = raw_input("Ratio of learning from NEIGHBORHOOD's best (0.5):") or 0.5
@@ -84,10 +84,11 @@ def main(debugg, para):
     fw.close()
     end = time.time()
     print "\nCost Time: " + str(end-start) + " sec."
-    print "\nRBF Network trained complete!\n"
+    print "\nRBF Network trained complete!"
     print "--------------------------------------------------\n"
 
 if __name__ == '__main__':
+    print "-----------------\nWelcome to the PSO training Machine!\n"
     debug = False
     if len(sys.argv) < 2:
         main(debug, None)

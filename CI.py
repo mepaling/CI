@@ -188,17 +188,17 @@ def PSO_Interface():
     #print "fstr:" + fstr
     pso = Gene.Gene()
     pso.setGene(fstr)
-    pso.showDNA()
+    #pso.showDNA()
     return pso
 
 def Good_Selector():
     print "Do you want open a well-trained PSO?"
-    print "Enter A, B, C, D or not enter anything(trained yourself)"
+    print "Enter A, B, C, D or enter something or nothing(trained yourself)"
     print "A: poolsize=10, itertimes=10, phi1=0.4"
     print "B: poolsize=20, itertimes=10, phi1=0.5"
     print "C: poolsize=20, itertimes=20, phi1=0.5"
     print "D: poolsize=128, itertimes=50, phi1=0.5"
-    print "(other):Trained Yourself"
+    print "(other): Trained Yourself"
     choice = raw_input("Enter a choice:") or "yourself"
     fp = None
     if choice.upper() == "A":
