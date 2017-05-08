@@ -1,27 +1,35 @@
 """Particle Swarm Optimization Machine - Run the PSO Algo"""
 # coding: utf-8
-# pylint: disable = C0301, C0103, C0200, W0403
+# pylint: disable = C0301, C0103, C0200, W0403, W0612
 
 import os
+import ast
 import PSOSandbox
 
-def setinfo():
+def setinfo(debugg):
     """Get the needed infomation for PSO Sandbox"""
-    print "Set the information of PSO Sandbox."
-    print "Default value with nothing input!"
-    poolsize = raw_input("Gene Pool Size (128):") or 128
-    itertimes = raw_input("Iteration Times (50):") or 50
-    ratio_phi1 = raw_input("Ratio of learning from INDIVIDUAL'S PREVIOUS best (0.5):") or 0.5
-    ratio_phi2 = raw_input("Ratio of learning from NEIGHBORHOOD's best (0.5):") or 0.5
-    print "\n---\nYour Input:\n" + "PoolSize: " + str(poolsize) + "\nIterating Times: " + str(itertimes) + \
-          "\nRatio of learning from INDIVIDUAL'S PREVIOUS best: " + str(ratio_phi1) + \
-           "\nRatio of learning from NEIGHBORHOOD's best: " + str(ratio_phi2) + "\n---\n"
-    return {'itertimes':int(itertimes), 'poolsize':int(poolsize),
-            'ratio_phi1':float(ratio_phi1), 'ratio_phi2':float(ratio_phi2)}
+    if debugg is True:
+        ret = {'itertimes':int(50), 'poolsize':int(128),
+               'ratio_phi1':float(0.5), 'ratio_phi2':float(0.5)}
+    else:
+        print "Set the information of PSO Sandbox."
+        print "Default value with nothing input!"
+        poolsize = raw_input("Gene Pool Size (128):") or 128
+        itertimes = raw_input("Iteration Times (50):") or 50
+        ratio_phi1 = raw_input("Ratio of learning from INDIVIDUAL'S PREVIOUS best (0.5):") or 0.5
+        ratio_phi2 = raw_input("Ratio of learning from NEIGHBORHOOD's best (0.5):") or 0.5
+        ret = {'itertimes':int(itertimes), 'poolsize':int(poolsize),
+               'ratio_phi1':float(ratio_phi1), 'ratio_phi2':float(ratio_phi2)}
 
-def main():
+    print "\n---\nYour Input:\n" + "PoolSize: " + str(ret.get('poolsize')) + \
+          "\nIterating Times: " + str(ret.get('itertimes')) + \
+          "\nRatio of learning from INDIVIDUAL'S PREVIOUS best: " + str(ret.get('ratio_phi1')) + \
+          "\nRatio of learning from NEIGHBORHOOD's best: " + str(ret.get('ratio_phi2')) + "\n---\n"
+    return ret
+
+def main(debugg):
     """Run PSO Machine to find best parameter of RBF Network"""
-    configs = setinfo()
+    configs = setinfo(debugg)
     path = './data/no_pos/'
     inputt = []
     outputt = []
@@ -33,12 +41,12 @@ def main():
             for line in f.readlines():
                 tp = line.split()
                 listt = []
-                if isinstance(eval(tp[0]), float):
-                    listt.append(eval(tp[0]))
-                    listt.append(eval(tp[1]))
-                    listt.append(eval(tp[2]))
+                if isinstance(ast.literal_eval(tp[0]), float):
+                    listt.append(ast.literal_eval(tp[0]))
+                    listt.append(ast.literal_eval(tp[1]))
+                    listt.append(ast.literal_eval(tp[2]))
                     inputt.append(listt)
-                    outputt.append(eval(tp[3]))
+                    outputt.append(ast.literal_eval(tp[3]))
                 else:
                     print tp
     print "N = " + str(len(inputt))
@@ -60,5 +68,6 @@ def main():
     print "RBF Network has been trained by PSO!"
 
 if __name__ == '__main__':
-    main()
+    debug = True
+    main(debug)
     raw_input("\nPress Enter to close the window")

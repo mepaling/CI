@@ -4,17 +4,19 @@
 """Real type of Gene Algorithm"""
 
 import random
+import numpy
 import RBFN
 
 class Gene(object):
-    """RGA class"""
+    """Real type Gene Algorithm class"""
     def __init__(self):
         self.J = 3
         self.xDim = 3
         self.DNALength = 1 + self.J + self.J * self.xDim + self.J
         self.f = 0.0
         self.rbf = RBFN.RBFN(self.J, self.xDim)
-        self.DNA = [0] * self.DNALength
+        #self.DNA = [0.0] * self.DNALength
+        self.DNA = numpy.zeros((self.DNALength), numpy.float32)
 
     def generate(self):
         """Random build Gene"""
@@ -46,7 +48,7 @@ class Gene(object):
         self.f = ret
 
     def on(self):
-        """Start iteration"""
+        """Set parameters for RBF Network"""
         for i in range(0, 1):
             self.rbf.bias = min(max(self.DNA[i], 0), 1)
             self.DNA[i] = self.rbf.bias
@@ -59,7 +61,7 @@ class Gene(object):
 
         j = 0
         for i in range(1+self.J, 1 + self.J + self.J*self.xDim):
-            self.rbf.M[j / self.xDim][j % self.xDim] = min(max(self.DNA[i], 0), 30)
+            self.rbf.M[int(j / self.xDim)][j % self.xDim] = min(max(self.DNA[i], 0), 30)
             self.DNA[i] = self.rbf.M[int(j / self.xDim)][j % self.xDim]
             j += 1
 

@@ -18,7 +18,7 @@ class PSOSandbox(object):
         self.bestPSOList = []
         self.hasiter = 1
         self.bestPSO = Particle.Particle()
-        for i in range(poolSize):
+        for _ in range(poolSize):
             p = Particle.Particle()
             p.generate()
             self.PSOList.append(p)

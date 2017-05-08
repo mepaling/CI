@@ -29,6 +29,9 @@ https://zh.wikipedia.org/wiki/%E7%B2%92%E5%AD%90%E7%BE%A4%E4%BC%98%E5%8C%96
 https://jamesmccaffrey.wordpress.com/2015/06/09/particle-swarm-optimization-using-python/
 """
 
+# Debug Mode (0-interactive / 1-FuzzySystem / 2-GA / 3-PSO)
+debug = 3
+
 # base settings
 canvas_width = 600
 canvas_height = 600
@@ -150,7 +153,8 @@ def moving():
         theta = calc_model.main(gene, [car.sf, car.sl, car.sr])
         print theta
     else:
-        print "pso:" + pso
+        print "pso:"
+        print pso
         theta = calc_model.main(pso, [car.sf, car.sl, car.sr])
         print theta
     #theta = 40
@@ -181,7 +185,7 @@ def GA_Interface():
 
 def PSO_Interface():
     fstr = file_PSO.readline()
-    print fstr
+    print "fstr:" + fstr
     pso = Gene.Gene()
     pso.setGene(fstr)
     pso.showDNA()
@@ -190,7 +194,10 @@ def PSO_Interface():
 """Main"""
 while True:
     print "1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN"
-    enter = raw_input("Enter choice (1/2/3): ")
+    if debug is 0:
+        enter = raw_input("Enter choice (1/2/3): ")
+    else:
+        enter = str(debug)
     if enter is "1":    # Create a FuzzySystem instance
         calc_model = FuzzySystem.FuzzySystem()
         break
@@ -203,6 +210,7 @@ while True:
         file_PSO = open("bestPSO.txt", "r")
         calc_model = PSOUI.PSOUI()
         pso = PSO_Interface()
+        break
     else:
         print "You enter a wrong choice, try again!"
 
