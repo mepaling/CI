@@ -17,7 +17,6 @@ def setinfo(debugg, para):
         else:
             ret = {'itertimes':int(10), 'poolsize':int(10),
                    'ratio_phi1':float(para.get('phi1')), 'ratio_phi2':float(para.get('phi2'))}
-
     else:
         print "Set the information of PSO Sandbox."
         print "Default value with nothing input!"
