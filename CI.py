@@ -6,7 +6,7 @@ from functions import *
 import FS.FuzzySystem as FuzzySystem
 import RBFN.Gene as Gene
 import RBFN.GeneUI as GeneUI
-import RBFN.PSOMachine as PSOMachine
+import RBFN.PSOUI as PSOUI
 
 """
 By 105522056 王建舜
@@ -23,6 +23,10 @@ Reference 2
 http://www.academia.edu/1570783/TRAINING_RADIAL_BASIS_FUNCTION_NETWORKS_BY_GENETIC_ALGORITHMS
 https://pdfs.semanticscholar.org/41a6/51956cf2605a729e83aef5d13a831b4a832c.pdf
 http://morris821028.github.io/
+
+Reference 3
+https://zh.wikipedia.org/wiki/%E7%B2%92%E5%AD%90%E7%BE%A4%E4%BC%98%E5%8C%96
+https://jamesmccaffrey.wordpress.com/2015/06/09/particle-swarm-optimization-using-python/
 """
 
 # base settings
@@ -34,11 +38,13 @@ rotate = point(1, -1)
 speed = 10
 calc_model = None
 gene = None
+pso = None
 
-# Open 3 files
+# Prepare 4 files' object
 file_4D = open("train4D.txt", 'w')
 file_6D = open("train6D.txt", 'w')
-file_GA = open("bestGA.txt", "r")
+file_GA = None
+file_PSO = None
 
 # calculate the value after zoomed
 def zoom(value, method):
@@ -144,8 +150,9 @@ def moving():
         theta = calc_model.main(gene, [car.sf, car.sl, car.sr])
         print theta
     else:
-        # theta = calc_model.main( ?
-        pass
+        print "pso:" + pso
+        theta = calc_model.main(pso, [car.sf, car.sl, car.sr])
+        print theta
     #theta = 40
     car.set_pos_theta(theta)
     calculate_sensor(car)
@@ -172,6 +179,13 @@ def GA_Interface():
     gene.showDNA()
     return gene
 
+def PSO_Interface():
+    fstr = file_PSO.readline()
+    print fstr
+    pso = Gene.Gene()
+    pso.setGene(fstr)
+    pso.showDNA()
+    return pso
 
 """Main"""
 while True:
@@ -181,12 +195,14 @@ while True:
         calc_model = FuzzySystem.FuzzySystem()
         break
     elif enter is "2":  # Create a GeneMachine instance
+        file_GA = open("bestGA.txt", "r")
         calc_model = GeneUI.GeneUI()
         gene = GA_Interface()
         break
     elif enter is "3":  # Create a PSOMachine instance
-        calc_model = PSOMachine.PSOMachine()
-        print "Not done yet, please try again!"
+        file_PSO = open("bestPSO.txt", "r")
+        calc_model = PSOUI.PSOUI()
+        pso = PSO_Interface()
     else:
         print "You enter a wrong choice, try again!"
 
