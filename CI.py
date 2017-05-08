@@ -30,7 +30,7 @@ https://jamesmccaffrey.wordpress.com/2015/06/09/particle-swarm-optimization-usin
 """
 
 # Debug Mode (0-interactive / 1-FuzzySystem / 2-GA / 3-PSO)
-debug = 3
+debug = 0
 
 # base settings
 canvas_width = 600
