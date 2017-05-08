@@ -56,7 +56,7 @@ class Particle(object):
         for i in range(1 + self.J + self.J*self.xDim, 1 + self.J + self.J*self.xDim + self.J):
             self.rbf.sigma[j] = min(max(self.x[i], 1e-6), 10)
             self.x[i] = self.rbf.sigma[j]
-            #j += 1
+            j += 1
 
     def calculateFitness(self, inputt, outputt):
         """Calculate the stop condition"""
