@@ -97,12 +97,12 @@ def draw_car_image(canvas, car, car_last_point=None):
     car.canvas_horaxis = draw_border(canvas, car.horaxis, "red")
     car.canvas_veraxis = draw_border(canvas, car.veraxis, "red")
 
-
 # remove the car image on the canvas
 def remove_car_image(canvas, car):
     canvas.delete(car.canvas_car)
     canvas.delete(car.canvas_horaxis)
     canvas.delete(car.canvas_veraxis)
+
 # calculate sensor's value
 def calculate_sensor(car):
     min_sf = float('inf')
@@ -206,13 +206,13 @@ def Good_Selector():
         fp = open("bestPSO4vs6-2-win.txt", "r")
     elif choice.upper() == "B":
         print "You choose B - poolsize=20, itertimes=10, phi1=0.5"
-        fp = open("bestPSO4vs6-2-win.txt", "r")
+        fp = open("bestPSOp20-i10-1-win.txt", "r")
     elif choice.upper() == "C":
         print "You choose C - poolsize=20, itertimes=20, phi1=0.5"
-        fp = open("bestPSO4vs6-2-win.txt", "r")
+        fp = open("bestPSOp20-i20-win.txt", "r")
     elif choice.upper() == "D":
         print "You choose D - poolsize=128, itertimes=50, phi1=0.5"
-        fp = open("bestPSO4vs6-2-win.txt", "r")
+        fp = open("bestPSOp128-i50-win.txt", "r")
     else:
         print "You choose the file that you created! (bestPSO.txt)"
         fp = open("bestPSO.txt", "r")
@@ -268,7 +268,6 @@ draw_circle(canvas, goal.x, goal.y)
 
 # Bind moving function
 canvas.after(0, moving)
-
 
 # Create Window!
 canvas.pack()
