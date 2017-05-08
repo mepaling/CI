@@ -51,9 +51,9 @@ file_PSO = None
 
 # calculate the value after zoomed
 def zoom(value, method):
-    if method is "x":
+    if method == "x":
         return value*ratio*rotate.x+offset.x
-    elif method is "y":
+    elif method == "y":
         return value*ratio*rotate.y+offset.y
     else:
         return None
@@ -72,7 +72,7 @@ def draw_border(canvas, line, fill="black"):
 def draw_car_image(canvas, car, car_last_point=None):
     car.canvas_car = draw_circle(canvas, car.x, car.y, car.r)
     car_point = point(car.x, car.y)
-    if car_last_point is None:
+    if car_last_point == None:
         car.veraxis = line(car.x, car.y, x2=car.x, y2=car.y+car.r*1.5)
         car.horaxis = line(car.x-car.r*1.5, car.y, x2=car.x+car.r*1.5, y2=car.y)
     else:
@@ -85,7 +85,7 @@ def draw_car_image(canvas, car, car_last_point=None):
             else:
                 next_point_ver = (point_distance(car_point, slope, car.r*1.5))[0]
             #print next_point_ver
-            if isnan(next_point_ver.y):
+            if np.isnan(next_point_ver.y):
                 next_point_ver.y = car_point.y + car.r*1.5
             next_point_hor_0 = (point_distance(car_point, ver_slope, car.r*1.5))[0]
             next_point_hor_1 = (point_distance(car_point, ver_slope, car.r*1.5))[1]
@@ -112,23 +112,23 @@ def calculate_sensor(car):
     count = len(border_arr)
     # has -3 in set_sensor_val
     for ele in border_arr:
-        if count is 1:
+        if count == 1:
             break
         else:
             count -= 1
         # the intersection point of front sensor line and wall
         point_f_border = point_intersection_between_lines(ele, car.sfl)
-        if point_f_border is not None and (between_ab(point_f_border.x, ele.xmin, ele.xmax) and between_ab(point_f_border.y, ele.ymin, ele.ymax)):
+        if point_f_border != None and (between_ab(point_f_border.x, ele.xmin, ele.xmax) and between_ab(point_f_border.y, ele.ymin, ele.ymax)):
             dis_f_border = dis_p1_p2(car_point, point_f_border)
             min_sf = min(min_sf, dis_f_border)
 
         point_l_border = point_intersection_between_lines(ele, car.sll)
-        if point_l_border is not None and (between_ab(point_l_border.x, ele.xmin, ele.xmax) and between_ab(point_l_border.y, ele.ymin, ele.ymax)):
+        if point_l_border != None and (between_ab(point_l_border.x, ele.xmin, ele.xmax) and between_ab(point_l_border.y, ele.ymin, ele.ymax)):
             dis_l_border = dis_p1_p2(car_point, point_l_border)
             min_sl = min(min_sl, dis_l_border)
 
         point_r_border = point_intersection_between_lines(ele, car.srl)
-        if point_r_border is not None and (between_ab(point_r_border.x, ele.xmin, ele.xmax) and between_ab(point_r_border.y, ele.ymin, ele.ymax)):
+        if point_r_border != None and (between_ab(point_r_border.x, ele.xmin, ele.xmax) and between_ab(point_r_border.y, ele.ymin, ele.ymax)):
             dis_r_border = dis_p1_p2(car_point, point_r_border)
             min_sr = min(min_sr, dis_r_border)
         #print (min_sf)
@@ -194,19 +194,19 @@ def PSO_Interface():
 """Main"""
 while True:
     print "1 - FuzzySystem / 2 - Gene_RBFN / 3 - PSO_RBFN"
-    if debug is 0:
+    if debug == 0:
         enter = raw_input("Enter choice (1/2/3): ")
     else:
         enter = str(debug)
-    if enter is "1":    # Create a FuzzySystem instance
+    if enter == "1":    # Create a FuzzySystem instance
         calc_model = FuzzySystem.FuzzySystem()
         break
-    elif enter is "2":  # Create a GeneMachine instance
+    elif enter == "2":  # Create a GeneMachine instance
         file_GA = open("bestGA.txt", "r")
         calc_model = GeneUI.GeneUI()
         gene = GA_Interface()
         break
-    elif enter is "3":  # Create a PSOMachine instance
+    elif enter == "3":  # Create a PSOMachine instance
         file_PSO = open("bestPSO.txt", "r")
         calc_model = PSOUI.PSOUI()
         pso = PSO_Interface()

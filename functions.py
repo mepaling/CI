@@ -1,39 +1,41 @@
 # coding: utf-8
 # pylint: skip-file
 
-from math import *
 from exceptions import ZeroDivisionError
+import numpy as np
 
 class car:
-    def __init__(self, x=0, y=0, phi=90, r=3):
+    def __init__(self, x=0.0, y=0.0, phi=90.0, r=3.0):
         self.x = x
         self.y = y
         self.phi = phi
         self.r = r
-        self.sl = 0 # left sensor
-        self.sll = line(x, y, slope=-1, xmin=float('-inf'), xmax=0, ymin=0, ymax=float('inf'))
-        self.sr = 0 # right sensor
-        self.srl = line(x, y, slope=1, xmin=0, xmax=float('inf'), ymin=0, ymax=float('inf'))
-        self.sf = 0 # front sensor
-        self.sfl = line(x, y, slope=None, xmin=0, xmax=0, ymin=0, ymax=float('inf'))
+        self.sl = 0.0 # left sensor
+        self.sll = line(x, y, slope=-1.0, xmin=-np.inf, xmax=0.0, ymin=0.0, ymax=np.inf)
+        self.sr = 0.0 # right sensor
+        self.srl = line(x, y, slope=1.0, xmin=0.0, xmax=np.inf, ymin=0.0, ymax=np.inf)
+        self.sf = 0.0 # front sensor
+        self.sfl = line(x, y, slope=None, xmin=0.0, xmax=0.0, ymin=0.0, ymax=np.inf)
         self.horaxis = line(x-1.5*r, y, x2=x+1.5*r, y2=y)
         self.veraxis = line(x, y, x2=x, y2=y+1.5*r)
         self.canvas_car = None
         self.canvas_horaxis = None
         self.canvas_veraxis = None
-        self.b = r * 2
+        self.b = r * 2.0
 
     def set_pos_direct(self, x, y):
         self.x = x
         self.y = y
 
     def set_pos_theta(self, theta):
-        self.x += cos(degree2radian(self.phi + theta)) + sin(degree2radian(theta)) * sin(degree2radian(self.phi))
-        self.y += sin(degree2radian(self.phi + theta)) - sin(degree2radian(theta)) * cos(degree2radian(self.phi))
-        self.phi -= radian2degree(asin(2*sin(degree2radian(theta)) / self.b))
-        self.sfl = line(self.x, self.y, slope=tan(degree2radian(self.phi)))
-        self.sll = line(self.x, self.y, slope=tan(degree2radian(self.phi+45)))
-        self.srl = line(self.x, self.y, slope=tan(degree2radian(self.phi-45)))
+        self.x += np.cos(degree2radian(self.phi + theta)) + \
+                  np.sin(degree2radian(theta)) * np.sin(degree2radian(self.phi))
+        self.y += np.sin(degree2radian(self.phi + theta)) - \
+                  np.sin(degree2radian(theta)) * np.cos(degree2radian(self.phi))
+        self.phi -= radian2degree(np.arcsin(2*np.sin(degree2radian(theta)) / self.b))
+        self.sfl = line(self.x, self.y, slope=np.tan(degree2radian(self.phi)))
+        self.sll = line(self.x, self.y, slope=np.tan(degree2radian(self.phi+45.0)))
+        self.srl = line(self.x, self.y, slope=np.tan(degree2radian(self.phi-45.0)))
 
         #print self.print_sensor()
         if self.phi < -360.0:
@@ -42,9 +44,9 @@ class car:
             self.phi -= 360.0
 
     def set_sensor_val(self, sf, sl, sr):
-        self.sf = sf - 3
-        self.sl = sl - 3
-        self.sr = sr - 3
+        self.sf = sf - 3.0
+        self.sl = sl - 3.0
+        self.sr = sr - 3.0
 
     def print_car_4D(self, theta=0):
         return ("%.7f %.7f %.7f %.7f" % (self.sf, self.sr, self.sl, theta))
@@ -78,7 +80,7 @@ class line:
         self.xmax = kwargs.get('xmax')
         self.ymin = kwargs.get('ymin')
         self.ymax = kwargs.get('ymax')
-        if kwargs.get('x2') is not None:
+        if kwargs.get('x2') != None:
             x2 = kwargs.get('x2')
             y2 = kwargs.get('y2')
             self.point2 = point(x2, y2)
@@ -94,29 +96,29 @@ class line:
         else:
             slope = kwargs.get('slope')
             self.slope = slope
-            if self.slope is not None:
+            if self.slope != None:
                 self.a = slope
-                self.b = -1
+                self.b = -1.0
                 self.c = y1 - slope*x1
             else:
-                self.a = 1
-                self.b = 0
+                self.a = 1.0
+                self.b = 0.0
                 self.c = x1
 
-            if self.xmin is None:
-                self.xmin = float('-inf')
-            if self.xmax is None:
-                self.xmax = float('inf')
-            if self.ymin is None:
-                self.ymin = float('-inf')
-            if self.ymax is None:
-                self.ymax = float('inf')
+            if self.xmin == None:
+                self.xmin = -np.inf
+            if self.xmax == None:
+                self.xmax = np.inf
+            if self.ymin == None:
+                self.ymin = -np.inf
+            if self.ymax == None:
+                self.ymax = np.inf
 
     def __str__(self):
         ret = ""
-        if not self.a is 0:
+        if self.a != 0:
             ret += str(self.a) + "x + "
-        if not self.b is 0:
+        if self.b != 0:
             if self.b < 0:
                 ret = ret[0:-2]
             ret += str(self.b) + "y + "
@@ -129,23 +131,23 @@ def get_slope(p1, p2):
     try:
         return (p1.y - p2.y) / (p1.x - p2.x)
     except ZeroDivisionError:
-        return float('inf')
+        return np.inf
     
 
 def dis_point_line (point, line):
-    return (abs(line.a*point.x + line.b*point.y + line.c) / sqrt(line.a*line.a + line.b*line.b))
+    return (np.absolute(line.a*point.x + line.b*point.y + line.c) / np.sqrt(line.a*line.a + line.b*line.b))
 
 def dis_p1_p2(p1, p2):
-    return sqrt((p2.x-p1.x)*(p2.x-p1.x) + (p2.y-p1.y)*(p2.y-p1.y))
+    return np.sqrt((p2.x-p1.x)*(p2.x-p1.x) + (p2.y-p1.y)*(p2.y-p1.y))
 
 def degree2radian(d):
-    return radians(d)
+    return np.radians(d)
 
 def radian2degree(r):
-    return degrees(r)
+    return np.degrees(r)
 
 def point_distance(p, slope, distance):
-    deltax = sqrt(distance*distance / (slope*slope + 1))
+    deltax = np.sqrt(distance*distance / (slope*slope + 1))
     deltay = slope*deltax
     return [point(p.x + deltax, p.y+deltay), point(p.x - deltax, p.y-deltay)]
 
@@ -162,11 +164,11 @@ def dis_between_point_line_theta(p, li, theta):
     dis = dis_point_line(p, li)
     #print "p:" + str(p) + " line:" + str(li) + " dis:" + str(dis)
     #ans = abs( dis * acos( degree2radian(135-theta) ) )
-    ans = abs( dis * (1 / cos( degree2radian(theta) + (degree2radian(90)-atan(li.slope)) )) )
+    ans = np.absolute( dis * (1 / np.cos( degree2radian(theta) + (degree2radian(90)-np.arctan(li.slope)) )) )
     ip = point_line_interpoint(p, li)
-    if ip is not None:
+    if ip != None:
         if not (li.xmin <= ip.x and ip.x <= li.xmax and li.ymin <= ip.y and ip.y <= li.ymax):
-            return float('inf')
+            return np.inf
     return ans
 
 # Cramer's rule
@@ -174,10 +176,10 @@ def point_intersection_between_lines(line1, line2):
     delta = line1.a*line2.b - line1.b*line2.a
     deltax = -line1.c*line2.b + line1.b*line2.c
     deltay = -line1.a*line2.c + line1.c*line2.a
-    if delta is not 0:
+    if not delta == 0.0:
         return point(deltax / delta, deltay / delta)
-    elif delta is 0 and deltax and 0 and deltay and 0:
-        return float('inf')
+    elif delta == 0.0 and deltax == 0.0 and deltay == 0.0:
+        return np.inf
     else:
         return None
 
