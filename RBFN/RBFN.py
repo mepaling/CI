@@ -17,7 +17,7 @@ class RBFN(object):
         self.M = numpy.zeros((J, xDim), numpy.float32)
         self.J = J
         self.xDim = xDim
-        self.bias = 0
+        self.bias = 0.0
 
     def calculateOutput(self, x):
         """Calculate the output of Gauss base function"""

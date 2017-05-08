@@ -9,8 +9,8 @@ import PSOSandbox
 def setinfo(debugg):
     """Get the needed infomation for PSO Sandbox"""
     if debugg is True:
-        ret = {'itertimes':int(50), 'poolsize':int(128),
-               'ratio_phi1':float(0.5), 'ratio_phi2':float(0.5)}
+        ret = {'itertimes':int(10), 'poolsize':int(64),
+               'ratio_phi1':float(0.7), 'ratio_phi2':float(0.3)}
     else:
         print "Set the information of PSO Sandbox."
         print "Default value with nothing input!"
@@ -60,7 +60,7 @@ def main(debugg):
                                     configs.get('ratio_phi1'), configs.get('ratio_phi2'))
     bestPSOList = sandbox.PSOIteration(inputt, outputt)
     PSOList = bestPSOList.getPSOList()
-    fw = open("../bestPSO.txt", 'w')
+    fw = open("./bestPSO.txt", 'w')
     print PSOList
     s = " ".join(str(ele) for ele in PSOList) + "\n"
     fw.write(s)
