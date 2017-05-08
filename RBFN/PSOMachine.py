@@ -10,7 +10,7 @@ def setinfo(debugg):
     """Get the needed infomation for PSO Sandbox"""
     if debugg is True:
         ret = {'itertimes':int(10), 'poolsize':int(64),
-               'ratio_phi1':float(0.7), 'ratio_phi2':float(0.3)}
+               'ratio_phi1':float(0.5), 'ratio_phi2':float(0.5)}
     else:
         print "Set the information of PSO Sandbox."
         print "Default value with nothing input!"
