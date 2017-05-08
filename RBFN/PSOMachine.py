@@ -3,19 +3,26 @@
 # pylint: disable = C0301, C0103, C0200, W0403, W0612
 
 import os
+import sys
+import time
 import ast
 import PSOSandbox
 
-def setinfo(debugg):
+def setinfo(debugg, para):
     """Get the needed infomation for PSO Sandbox"""
     if debugg is True:
-        ret = {'itertimes':int(10), 'poolsize':int(64),
-               'ratio_phi1':float(0.7), 'ratio_phi2':float(0.3)}
+        if para is None:
+            ret = {'itertimes':int(10), 'poolsize':int(10),
+                   'ratio_phi1':float(0.5), 'ratio_phi2':float(0.5)}
+        else:
+            ret = {'itertimes':int(10), 'poolsize':int(10),
+                   'ratio_phi1':float(para.get('phi1')), 'ratio_phi2':float(para.get('phi2'))}
+
     else:
         print "Set the information of PSO Sandbox."
         print "Default value with nothing input!"
         poolsize = raw_input("Gene Pool Size (128):") or 128
-        itertimes = raw_input("Iteration Times (50):") or 50
+        itertimes = raw_input("Iteration Times (10):") or 10
         ratio_phi1 = raw_input("Ratio of learning from INDIVIDUAL'S PREVIOUS best (0.5):") or 0.5
         ratio_phi2 = raw_input("Ratio of learning from NEIGHBORHOOD's best (0.5):") or 0.5
         ret = {'itertimes':int(itertimes), 'poolsize':int(poolsize),
@@ -27,12 +34,14 @@ def setinfo(debugg):
           "\nRatio of learning from NEIGHBORHOOD's best: " + str(ret.get('ratio_phi2')) + "\n---\n"
     return ret
 
-def main(debugg):
+def main(debugg, para):
     """Run PSO Machine to find best parameter of RBF Network"""
-    configs = setinfo(debugg)
-    path = './data/no_pos/'
+    configs = setinfo(debugg, para)
     inputt = []
     outputt = []
+    nowpath = os.path.dirname(os.path.abspath(__file__))
+    print nowpath
+    path = nowpath + '/data/no_pos/'
 
     for dirPath, dirNames, fileNames in os.walk(path):
         for filee in fileNames:
@@ -50,24 +59,50 @@ def main(debugg):
                 else:
                     print tp
     print "N = " + str(len(inputt))
-    print "input list = " + str(inputt)
-    print "output list = " + str(outputt)
-
-    for i in  range(len(outputt)):
+    #print "input list = " + str(inputt)
+    #print "output list = " + str(outputt)
+    start = time.time()
+    for i in range(len(outputt)):
         outputt[i] = (outputt[i] + 40) / 80.0
 
     sandbox = PSOSandbox.PSOSandbox(configs.get('poolsize'), configs.get('itertimes'), \
                                     configs.get('ratio_phi1'), configs.get('ratio_phi2'))
     bestPSOList = sandbox.PSOIteration(inputt, outputt)
     PSOList = bestPSOList.getPSOList()
-    fw = open("./bestPSO.txt", 'w')
+
+    if para is None:
+        fileName = os.path.abspath("..") + "/bestPSO.txt"
+    else:
+        fileName = os.path.abspath("..") + "/bestPSO" + para.get('fName') + ".txt"
+    print "\n--------------------------------------------------"
+    print "fileName:" + fileName
+    print "PSOList:"
     print PSOList
+
+    fw = open(fileName, 'w')
     s = " ".join(str(ele) for ele in PSOList) + "\n"
     fw.write(s)
     fw.close()
-    print "RBF Network has been trained by PSO!"
+    end = time.time()
+    print "\nCost Time: " + str(end-start) + " sec."
+    print "\nRBF Network trained complete!\n"
+    print "--------------------------------------------------\n"
 
 if __name__ == '__main__':
-    debug = True
-    main(debug)
-    raw_input("\nPress Enter to close the window")
+    debug = False
+    if len(sys.argv) < 2:
+        main(debug, None)
+    else:
+        #['RBFN/PSOMachine.py', 'apple']
+        phi1_Z = int(sys.argv[1])
+        times = int(sys.argv[2])
+        paraa = {'phi1':float(phi1_Z) / 10.0,
+                 'phi2':1.0 - float(phi1_Z)/10.0,
+                 'fName':str(phi1_Z) + "vs" + str(10-phi1_Z) + "-" + str(times)}
+        print paraa
+        main(debug, paraa)
+
+    if not debug:
+        raw_input("\nPress Enter to close the window")
+    else:
+        pass

@@ -4,6 +4,7 @@
 # pylint: disable = C0103, C0111, C0301, W0403
 
 import operator
+import time
 import copy
 import Particle
 
@@ -29,6 +30,7 @@ class PSOSandbox(object):
         return bestPSOList
 
     def performPSO(self, inputt, outputt):
+        start = time.time()
         for i in range(self.poolSize):
             self.PSOList[i].calculateFitness(inputt, outputt)
 
@@ -36,7 +38,7 @@ class PSOSandbox(object):
 
         self.bestPSO = copy.deepcopy(self.PSOList[0])
 
-        print "HasIter:" + str(self.hasiter)
+        print "Iter Round #" + str(self.hasiter) + " start"
 
         for i in range(0, self.poolSize):
             for j in range(self.bestPSO.xLength):
@@ -44,6 +46,9 @@ class PSOSandbox(object):
                                         self.phi2 * (self.bestPSO.x[j] - self.PSOList[i].x[j])
                 self.PSOList[i].x[j] += self.PSOList[i].v[j]
                 self.PSOList[i].calculateFitness(inputt, outputt)
-                self.bestPSO.f = min(self.PSOList[i].f, self.bestPSO.f)
+                if self.PSOList[i].f < self.bestPSO.f:
+                    self.bestPSO = copy.deepcopy(self.PSOList[i])
+        end = time.time()
+        print "Round #" + str(self.hasiter) + " cost: " + str(end-start) + " sec.\n"
         self.hasiter += 1
         return self.bestPSO

@@ -4,6 +4,7 @@
 
 import random
 import copy
+import numpy
 import RBFN
 
 class Particle(object):
@@ -15,9 +16,12 @@ class Particle(object):
         self.f = 0.0
         self.bestf = 0.0
         self.rbf = RBFN.RBFN(self.J, self.xDim)
-        self.v = [0.0]*self.xLength
-        self.x = [0.0]*self.xLength
-        self.best = [0.0]*self.xLength
+        #self.v = [0.0]*self.xLength
+        self.v = numpy.zeros((self.xLength), numpy.float32)
+        #elf.x = [0.0]*self.xLength
+        self.x = numpy.zeros((self.xLength), numpy.float32)
+        #self.best = [0.0]*self.xLength
+        self.best = numpy.zeros((self.xLength), numpy.float32)
 
     def generate(self):
         """Random Generate"""

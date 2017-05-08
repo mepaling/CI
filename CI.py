@@ -38,7 +38,7 @@ canvas_height = 600
 ratio = 9
 offset = point(150, 500)
 rotate = point(1, -1)
-speed = 10
+speed = 150
 calc_model = None
 gene = None
 pso = None
@@ -72,7 +72,7 @@ def draw_border(canvas, line, fill="black"):
 def draw_car_image(canvas, car, car_last_point=None):
     car.canvas_car = draw_circle(canvas, car.x, car.y, car.r)
     car_point = point(car.x, car.y)
-    if car_last_point == None:
+    if car_last_point is None:
         car.veraxis = line(car.x, car.y, x2=car.x, y2=car.y+car.r*1.5)
         car.horaxis = line(car.x-car.r*1.5, car.y, x2=car.x+car.r*1.5, y2=car.y)
     else:
@@ -151,18 +151,18 @@ def moving():
         theta = calc_model.main(car.sf, car.sl, car.sr)
     elif calc_model_name == "GeneUI":
         theta = calc_model.main(gene, [car.sf, car.sl, car.sr])
-        print theta
+        #print theta
     else:
-        print "pso:"
-        print pso
+        #print "pso:"
+        #print pso
         theta = calc_model.main(pso, [car.sf, car.sl, car.sr])
-        print theta
+        #print theta
     #theta = 40
     car.set_pos_theta(theta)
     calculate_sensor(car)
 
     #print car
-    print str(car) + " theta:" + str(theta) + "\n"
+    #print str(car) + " theta:" + str(theta) + "\n"
     file_4D.write(car.print_car_4D(theta) + "\n")
     file_6D.write(car.print_car_6D(theta) + "\n")
 
@@ -185,11 +185,38 @@ def GA_Interface():
 
 def PSO_Interface():
     fstr = file_PSO.readline()
-    print "fstr:" + fstr
+    #print "fstr:" + fstr
     pso = Gene.Gene()
     pso.setGene(fstr)
     pso.showDNA()
     return pso
+
+def Good_Selector():
+    print "Do you want open a well-trained PSO?"
+    print "Enter A, B, C, D or not enter anything(trained yourself)"
+    print "A: poolsize=10, itertimes=10, phi1=0.4"
+    print "B: poolsize=20, itertimes=10, phi1=0.5"
+    print "C: poolsize=20, itertimes=20, phi1=0.5"
+    print "D: poolsize=128, itertimes=50, phi1=0.5"
+    print "(other):Trained Yourself"
+    choice = raw_input("Enter a choice:") or "yourself"
+    fp = None
+    if choice.upper() == "A":
+        print "You choose A - poolsize=10, itertimes=10, phi1=0.4"
+        fp = open("bestPSO4vs6-2-win.txt", "r")
+    elif choice.upper() == "B":
+        print "You choose B - poolsize=20, itertimes=10, phi1=0.5"
+        fp = open("bestPSO4vs6-2-win.txt", "r")
+    elif choice.upper() == "C":
+        print "You choose C - poolsize=20, itertimes=20, phi1=0.5"
+        fp = open("bestPSO4vs6-2-win.txt", "r")
+    elif choice.upper() == "D":
+        print "You choose D - poolsize=128, itertimes=50, phi1=0.5"
+        fp = open("bestPSO4vs6-2-win.txt", "r")
+    else:
+        print "You choose the file that you created! (bestPSO.txt)"
+        fp = open("bestPSO.txt", "r")
+    return fp
 
 """Main"""
 while True:
@@ -201,13 +228,13 @@ while True:
     if enter == "1":    # Create a FuzzySystem instance
         calc_model = FuzzySystem.FuzzySystem()
         break
-    elif enter == "2":  # Create a GeneMachine instance
+    elif enter == "2":  # Create a GeneUI instance
         file_GA = open("bestGA.txt", "r")
         calc_model = GeneUI.GeneUI()
         gene = GA_Interface()
         break
-    elif enter == "3":  # Create a PSOMachine instance
-        file_PSO = open("bestPSO.txt", "r")
+    elif enter == "3":  # Create a PSOUI instance
+        file_PSO = Good_Selector()
         calc_model = PSOUI.PSOUI()
         pso = PSO_Interface()
         break
@@ -229,7 +256,7 @@ for ele in border_arr:
 car = car(0, 0, 90, 3)
 calculate_sensor(car)
 #print car
-print str(car) + " theta:" + str(0) + "\n"
+#print str(car) + " theta:" + str(0) + "\n"
 file_4D.write(car.print_car_4D() + "\n")
 file_6D.write(car.print_car_6D() + "\n")
 draw_car_image(canvas, car)
